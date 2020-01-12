@@ -4,16 +4,16 @@ import {
   PromptText,
   Container,
   PromptDate
-} from "./styles/prompt-container";
+} from "../styles/prompt-container";
 import {
   formatISO,
   startOfWeek,
   endOfWeek,
   currentWeek,
-  weekFuture,
-  getDayName
-} from "./utils/time";
-import { fetchGet } from "./utils/api";
+  getDayName,
+  futureFirstWeek
+} from "../utils/time";
+import { fetchGet } from "../utils/api";
 
 const handleOnChange = (e, setFunction) => setFunction(e.target.value);
 
@@ -74,16 +74,24 @@ const AddActivity = () => {
     getFrequency();
   }, []);
 
-  const submitPlan = () => {
+  const submitPlan = props => {
+    const { userId } = props;
     const submittedData = {
-      futureCheckIn: generateCheckIn(),
-      activity,
-      activityTime,
-      activityFrequency,
-      week: {
-        start: formatISO(startOfWeek),
-        end: formatISO(endOfWeek)
-      }
+      userId,
+      plan: [
+        {
+          futureCheckIn: generateCheckIn(),
+          activity: {
+            name: activity,
+            duration: activityTime,
+            frequency: activityFrequency
+          },
+          week: {
+            start: formatISO(startOfWeek),
+            end: formatISO(endOfWeek)
+          }
+        }
+      ]
     };
     fetchPost(JSON.stringify(submittedData));
     console.log(submittedData);
@@ -109,7 +117,7 @@ const AddActivity = () => {
 
   const generateCheckIn = () => {
     setFutureCheckIn(getDayName());
-    return formatISO(weekFuture());
+    return formatISO(futureFirstWeek());
   };
 
   if (listExercises && listTime && listFrequency) {

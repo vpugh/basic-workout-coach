@@ -9,6 +9,9 @@ export const endOfWeek = moment().endOf("isoWeek");
 export const importISO = iso => moment(iso);
 export const getDayName = () => moment().format("dddd");
 export const weekFuture = (days = 7) => moment().add(days, "days");
+export const futureFirstWeek = moment()
+  .startOf("isoWeek")
+  .add(7, "days");
 
 export const currentWeek = () => {
   // console.log(today.toString(), startOfWeek.toString(), endOfWeek.toString());

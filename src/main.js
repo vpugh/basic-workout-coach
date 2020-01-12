@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PromptSelection from "./prompt-selection";
+import PlanContainer from "./plan-selection-display/plan-container";
 import { fetchGet } from "./utils/api";
 
 const Main = () => {
@@ -65,7 +65,7 @@ const Main = () => {
             Hi, {firstName} {lastName}
           </div>
         </div>
-        <PromptSelection userId={userId} />
+        <PlanContainer userId={userId} />
       </>
     );
   }
