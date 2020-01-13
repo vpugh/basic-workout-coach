@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { PromptContainer, Container } from "../styles/prompt-container";
 import { monthDayFormat, importISO } from "../utils/time";
+import { fetchUpdatePlans } from "../utils/api";
 
 const borderBottom = "1px solid";
 const fontWeight = "bold";
@@ -10,29 +11,38 @@ const style = {
   fontWeight
 };
 
-const fetchPut = (body, userId) => {
-  console.log(body);
-  fetch(
-    `https://5e10148d83440f0014d82b80.mockapi.io/api/v1/previous-plan/${userId}`,
-    {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "PUT",
-      body
-    }
-  );
+const fetchPut = (body, userId, planId) => {
+  fetchUpdatePlans(body, planId, userId);
 };
 
 const DisplayPreviousPlan = props => {
-  const { planData, userId } = props;
-  const { activity, futureCheckIn } = planData;
+  const { planData } = props;
+  const { activity, futureCheckIn, userId, id } = planData;
   const { name, duration, frequency } = activity;
+  const [updateName, setUpdateName] = useState(name);
+  const [updateDuration, setUpdateDuration] = useState(duration);
+  const [updateFrequency, setUpdateFrequency] = useState(frequency);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const data = {
-    ...planData,
-    test: "test"
+    userId,
+    id,
+    futureCheckIn,
+    activity: {
+      name: updateName,
+      duration: updateDuration,
+      frequency: updateFrequency
+    },
+    week: {
+      ...planData.week
+    }
+  };
+
+  const handleOnChange = (e, setFunction) => setFunction(e.target.value);
+
+  const updateButton = () => {
+    fetchPut(JSON.stringify(data), userId, id);
+    setIsUpdating(!isUpdating);
   };
 
   return (
@@ -45,7 +55,58 @@ const DisplayPreviousPlan = props => {
           {monthDayFormat(importISO(futureCheckIn))}
         </span>
       </PromptContainer>
-      <button onClick={() => fetchPut(data, userId)}>Update</button>
+
+      {!isUpdating && (
+        <button
+          style={{ margin: "20px 0" }}
+          onClick={() => setIsUpdating(!isUpdating)}
+        >
+          {isUpdating ? "Save Changes" : "Update"}
+        </button>
+      )}
+      {isUpdating && (
+        <form
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column"
+          }}
+        >
+          <div style={{ marginBottom: "20px" }}>
+            <h3>Update Week Plan</h3>
+            <label style={{ display: "block" }} htmlFor="updatName">
+              Activity Name
+            </label>
+            <input
+              id="updateName"
+              defaultValue={updateName}
+              onChange={e => handleOnChange(e, setUpdateName)}
+            />
+          </div>
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block" }} htmlFor="updateDuration">
+              Activity Duration
+            </label>
+            <input
+              id="updateDuration"
+              defaultValue={updateDuration}
+              onChange={e => handleOnChange(e, setUpdateDuration)}
+            />
+          </div>
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block" }} htmlFor="updateFrequency">
+              Activity Frequency
+            </label>
+            <input
+              id="updateFrequency"
+              defaultValue={updateFrequency}
+              onChange={e => handleOnChange(e, setUpdateFrequency)}
+            />
+          </div>
+          <button onClick={updateButton}>Save Changes</button>
+          <button onClick={() => setIsUpdating(!isUpdating)}>Cancel</button>
+        </form>
+      )}
     </Container>
   );
 };

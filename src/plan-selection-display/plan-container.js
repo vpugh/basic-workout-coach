@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DisplayPreviousPlan from "./displayPreviousPlan";
 import AddActivity from "./addActivity";
 import { formatISO, startOfWeek } from "../utils/time";
-import { fetchPreviousPlans } from "../utils/api";
+import { fetchPlans } from "../utils/api";
 
 const PlanContainer = props => {
   const [planData, setPlanData] = useState();
@@ -30,7 +30,7 @@ const PlanContainer = props => {
 
   useEffect(() => {
     const getPreviousPlans = async () => {
-      const plans = await fetchPreviousPlans(userId);
+      const plans = await fetchPlans(userId);
       if (plans && plans.length > 0 && checkCurrentPlan(plans)) {
         setHasCurrentPlan(true);
         setPlanData(currentPlanData(plans));
@@ -43,10 +43,10 @@ const PlanContainer = props => {
   }, [userId]);
 
   if (hasCurrentPlan && planData) {
-    return <DisplayPreviousPlan planData={planData[0]} userId={userId} />;
+    return <DisplayPreviousPlan planData={planData[0]} />;
   }
 
-  if (!fetchingPlan || !hasCurrentPlan) {
+  if (!fetchingPlan && !hasCurrentPlan) {
     return <AddActivity userId={userId} />;
   }
 
