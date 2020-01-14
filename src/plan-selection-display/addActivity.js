@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   PromptContainer,
   PromptText,
@@ -13,7 +13,7 @@ import {
   getDayName,
   futureFirstWeek
 } from "../utils/time";
-import { fetchGet, fetchPostPlans } from "../utils/api";
+import { fetchPostPlans } from "../utils/api";
 import useGenerateList from "../hooks/useGenerateList";
 
 const handleOnChange = (e, setFunction) => setFunction(e.target.value);
@@ -37,10 +37,6 @@ const AddActivity = props => {
   const { userId } = props;
   const [futureCheckIn, setFutureCheckIn] = useState(null);
 
-  const [listExercises, setListExercises] = useState();
-  const [listTime, setListTime] = useState();
-  const [listFrequency, setListFrequency] = useState();
-
   const [activity, setActivity] = useState(null);
   const [activityTime, setActivityTime] = useState(null);
   const [activityFrequency, setActivityFrequency] = useState(null);
@@ -48,26 +44,9 @@ const AddActivity = props => {
   const [submittedPlan, setSubmittedPlan] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const getActivites = async () => {
-    const activityRes = await fetchGet("exercises");
-    setListExercises(activityRes);
-  };
-
-  const getTime = async () => {
-    const timeRes = await fetchGet("time");
-    setListTime(timeRes);
-  };
-
-  const getFrequency = async () => {
-    const frequencyRes = await fetchGet("frequency");
-    setListFrequency(frequencyRes);
-  };
-
-  useEffect(() => {
-    getActivites();
-    getTime();
-    getFrequency();
-  }, []);
+  const { exercisesList } = useGenerateList("exercises");
+  const { timeList } = useGenerateList("time");
+  const { frequencyList } = useGenerateList("frequency");
 
   const submitPlan = () => {
     const submittedData = {
@@ -84,7 +63,6 @@ const AddActivity = props => {
       }
     };
     sendPlan(userId, JSON.stringify(submittedData));
-    console.log(submittedData);
     setSubmittedPlan(true);
     setSubmitted(true);
   };
@@ -110,7 +88,7 @@ const AddActivity = props => {
     return futureFirstWeek;
   };
 
-  if (listExercises && listTime && listFrequency) {
+  if (exercisesList && timeList && frequencyList) {
     return (
       <Container>
         <PromptText>
@@ -122,21 +100,21 @@ const AddActivity = props => {
             activity,
             "Select an activity",
             setActivity,
-            listExercises
+            exercisesList
           )}
           {activity &&
             generateSelect(
               activityTime,
               "How long will you do this for?",
               setActivityTime,
-              listTime
+              timeList
             )}
           {activityTime &&
             generateSelect(
               activityFrequency,
               "How many times will you do this in a week",
               setActivityFrequency,
-              listFrequency
+              frequencyList
             )}
           {activityFrequency && <p>Will check back in a week.</p>}
         </PromptContainer>
