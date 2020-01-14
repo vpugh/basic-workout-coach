@@ -14,8 +14,6 @@ export const futureFirstWeek = moment()
   .add(7, "days")
   .toISOString();
 export const currentWeek = () => {
-  // console.log(today.toString(), startOfWeek.toString(), endOfWeek.toString());
-  // console.log(today.isBetween(startOfWeek, endOfWeek));
   return `Week of ${monthDayFormat(startOfWeek)} ending ${monthDayFormat(
     endOfWeek
   )}`;
