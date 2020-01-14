@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PromptContainer, Container } from "../styles/prompt-container";
 import { monthDayFormat, importISO } from "../utils/time";
 import { fetchUpdatePlans } from "../utils/api";
+import useGenerateList from "../hooks/useGenerateList";
 
 const borderBottom = "1px solid";
 const fontWeight = "bold";
@@ -23,6 +24,10 @@ const DisplayPreviousPlan = props => {
   const [updateDuration, setUpdateDuration] = useState(duration);
   const [updateFrequency, setUpdateFrequency] = useState(frequency);
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const { exercisesList } = useGenerateList("exercises");
+  const { timeList } = useGenerateList("time");
+  const { frequencyList } = useGenerateList("frequency");
 
   const data = {
     userId,
@@ -79,34 +84,60 @@ const DisplayPreviousPlan = props => {
             <label style={{ display: "block" }} htmlFor="updatName">
               Activity Name
             </label>
-            <input
-              id="updateName"
+            <select
               defaultValue={updateName}
               onChange={e => handleOnChange(e, setUpdateName)}
-            />
+            >
+              {exercisesList.map(v => (
+                <option value={v} key={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
           </div>
           <div style={{ marginBottom: "20px" }}>
             <label style={{ display: "block" }} htmlFor="updateDuration">
               Activity Duration
             </label>
-            <input
-              id="updateDuration"
+            <select
               defaultValue={updateDuration}
               onChange={e => handleOnChange(e, setUpdateDuration)}
-            />
+            >
+              {timeList.map(v => (
+                <option value={v} key={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
           </div>
           <div style={{ marginBottom: "20px" }}>
             <label style={{ display: "block" }} htmlFor="updateFrequency">
               Activity Frequency
             </label>
-            <input
-              id="updateFrequency"
+            <select
               defaultValue={updateFrequency}
               onChange={e => handleOnChange(e, setUpdateFrequency)}
-            />
+            >
+              {frequencyList.map(v => (
+                <option value={v} key={v}>
+                  {v}
+                </option>
+              ))}
+            </select>
           </div>
-          <button onClick={updateButton}>Save Changes</button>
-          <button onClick={() => setIsUpdating(!isUpdating)}>Cancel</button>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              borderTop: "2px solid rgba(0, 0, 0, .2)",
+              paddingTop: "20px"
+            }}
+          >
+            <button style={{ marginRight: "20px" }} onClick={updateButton}>
+              Save Changes
+            </button>
+            <button onClick={() => setIsUpdating(!isUpdating)}>Cancel</button>
+          </div>
         </form>
       )}
     </Container>
