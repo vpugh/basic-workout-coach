@@ -11,8 +11,8 @@ export const getDayName = () => moment().format("dddd");
 export const weekFuture = (days = 7) => moment().add(days, "days");
 export const futureFirstWeek = moment()
   .startOf("isoWeek")
-  .add(7, "days");
-
+  .add(7, "days")
+  .toISOString();
 export const currentWeek = () => {
   // console.log(today.toString(), startOfWeek.toString(), endOfWeek.toString());
   // console.log(today.isBetween(startOfWeek, endOfWeek));

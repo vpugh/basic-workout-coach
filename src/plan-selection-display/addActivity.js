@@ -13,7 +13,7 @@ import {
   getDayName,
   futureFirstWeek
 } from "../utils/time";
-import { fetchGet } from "../utils/api";
+import { fetchGet, fetchPostPlans } from "../utils/api";
 
 const handleOnChange = (e, setFunction) => setFunction(e.target.value);
 
@@ -24,22 +24,16 @@ const defaultText = (variable, defaultText) => {
   return <p>{defaultText}</p>;
 };
 
-const fetchPost = body => {
-  fetch("https://5e10148d83440f0014d82b80.mockapi.io/api/v1/previous-plan", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    method: "POST",
-    body
-  });
+const sendPlan = (id, body) => {
+  fetchPostPlans(id, body);
 };
 
 const capitializeFirstLetter = word => {
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
 
-const AddActivity = () => {
+const AddActivity = props => {
+  const { userId } = props;
   const [futureCheckIn, setFutureCheckIn] = useState(null);
 
   const [listExercises, setListExercises] = useState();
@@ -74,26 +68,21 @@ const AddActivity = () => {
     getFrequency();
   }, []);
 
-  const submitPlan = props => {
-    const { userId } = props;
+  const submitPlan = () => {
     const submittedData = {
       userId,
-      plan: [
-        {
-          futureCheckIn: generateCheckIn(),
-          activity: {
-            name: activity,
-            duration: activityTime,
-            frequency: activityFrequency
-          },
-          week: {
-            start: formatISO(startOfWeek),
-            end: formatISO(endOfWeek)
-          }
-        }
-      ]
+      futureCheckIn: generateCheckIn(),
+      activity: {
+        name: activity,
+        duration: activityTime,
+        frequency: activityFrequency
+      },
+      week: {
+        start: formatISO(startOfWeek),
+        end: formatISO(endOfWeek)
+      }
     };
-    fetchPost(JSON.stringify(submittedData));
+    sendPlan(userId, JSON.stringify(submittedData));
     console.log(submittedData);
     setSubmittedPlan(true);
     setSubmitted(true);
@@ -117,7 +106,7 @@ const AddActivity = () => {
 
   const generateCheckIn = () => {
     setFutureCheckIn(getDayName());
-    return formatISO(futureFirstWeek());
+    return futureFirstWeek;
   };
 
   if (listExercises && listTime && listFrequency) {

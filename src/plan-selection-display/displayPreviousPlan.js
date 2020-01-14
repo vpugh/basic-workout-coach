@@ -40,9 +40,11 @@ const DisplayPreviousPlan = props => {
 
   const handleOnChange = (e, setFunction) => setFunction(e.target.value);
 
-  const updateButton = () => {
-    fetchPut(JSON.stringify(data), userId, id);
+  const updateButton = async () => {
+    await fetchPut(JSON.stringify(data), userId, id);
+    console.log("Send new data");
     setIsUpdating(!isUpdating);
+    console.log("Rerender new data");
   };
 
   return (
