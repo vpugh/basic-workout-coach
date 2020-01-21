@@ -4,6 +4,7 @@ export const today = moment();
 export const mom = moment();
 export const formatISO = date => date.toISOString();
 export const monthDayFormat = option => option.format("MMMM Do");
+export const monthDayYearFormat = option => option.format("MMMM Do YYYY");
 export const startOfWeek = moment().startOf("isoWeek");
 export const endOfWeek = moment().endOf("isoWeek");
 export const importISO = iso => moment(iso);

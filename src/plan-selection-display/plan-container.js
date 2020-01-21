@@ -8,6 +8,7 @@ const PlanContainer = props => {
   const [planData, setPlanData] = useState();
   const [hasCurrentPlan, setHasCurrentPlan] = useState(false);
   const [fetchingPlan, setFetchingPlan] = useState(true);
+  const [oldPlans, setOldPlans] = useState([]);
 
   const { userId } = props;
 
@@ -28,9 +29,18 @@ const PlanContainer = props => {
     }, []);
   };
 
+  const passedPlans = plans => {
+    setOldPlans(
+      plans.filter(x => !x.week.start.includes(formatISO(startOfWeek)))
+    );
+  };
+
   useEffect(() => {
     const getPreviousPlans = async () => {
       const plans = await fetchGetPlans(userId);
+      if (plans && plans.length > 0) {
+        passedPlans(plans);
+      }
       if (plans && plans.length > 0 && checkCurrentPlan(plans)) {
         setHasCurrentPlan(true);
         setPlanData(currentPlanData(plans));
@@ -43,7 +53,7 @@ const PlanContainer = props => {
   }, [userId]);
 
   if (hasCurrentPlan && planData) {
-    return <DisplayPreviousPlan planData={planData[0]} />;
+    return <DisplayPreviousPlan planData={planData[0]} oldPlans={oldPlans} />;
   }
 
   if (!fetchingPlan && !hasCurrentPlan) {

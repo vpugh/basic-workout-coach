@@ -17,9 +17,11 @@ const fetchPut = (body, userId, planId) => {
 };
 
 const DisplayPreviousPlan = props => {
-  const { planData } = props;
+  const { planData, oldPlans } = props;
+
   const { activity, futureCheckIn, userId, id } = planData;
   const { name, duration, frequency } = activity;
+
   const [updateName, setUpdateName] = useState(name);
   const [updateDuration, setUpdateDuration] = useState(duration);
   const [updateFrequency, setUpdateFrequency] = useState(frequency);
@@ -46,14 +48,38 @@ const DisplayPreviousPlan = props => {
   const handleOnChange = (e, setFunction) => setFunction(e.target.value);
 
   const updateButton = async () => {
-    await fetchPut(JSON.stringify(data), userId, id);
-    console.log("Send new data");
+    fetchPut(JSON.stringify(data), userId, id);
     setIsUpdating(!isUpdating);
-    console.log("Rerender new data");
+  };
+
+  const sortPlans = plans => {
+    const sort = plans.sort((a, b) => a.week.start.localeCompare(b.week.start));
+    return sort;
   };
 
   return (
     <Container>
+      <div
+        style={{
+          background: "#38506B",
+          padding: "20px",
+          marginBottom: "20px",
+          color: "#558ea5"
+        }}
+      >
+        <h2 style={{ marginTop: 0 }}>Previous Plans</h2>
+        {sortPlans(oldPlans).map(op => {
+          const startDate = monthDayFormat(importISO(op.week.start));
+          const acName = op.activity.name;
+          const acDuration = op.activity.duration;
+          const acFrequency = op.activity.frequency;
+          return (
+            <p key={startDate} style={{ marginBottom: 0 }}>
+              {startDate} | {acName} {acDuration} {acFrequency}
+            </p>
+          );
+        })}
+      </div>
       <PromptContainer>
         You will attempt to <span style={{ ...style }}>{name}</span> for{" "}
         <span style={{ ...style }}>{duration}</span> at least{" "}

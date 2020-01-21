@@ -32,7 +32,7 @@ const Main = () => {
                 marginBottom: ".5rem"
               }}
             >
-              Workout Coach
+              Workout Partner
             </h1>
             <h2
               style={{
@@ -42,7 +42,7 @@ const Main = () => {
                 fontSize: "1rem"
               }}
             >
-              Keeping yourself accountable
+              Helping attain your goal
             </h2>
           </div>
           <div
