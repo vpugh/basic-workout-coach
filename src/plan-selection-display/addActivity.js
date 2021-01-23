@@ -29,11 +29,11 @@ const sendPlan = (id, body) => {
   fetchPostPlans(id, body);
 };
 
-const capitializeFirstLetter = word => {
+const capitializeFirstLetter = (word) => {
   return word[0].toUpperCase() + word.slice(1).toLowerCase();
 };
 
-const AddActivity = props => {
+const AddActivity = (props) => {
   const { userId } = props;
   const [futureCheckIn, setFutureCheckIn] = useState(null);
 
@@ -44,9 +44,41 @@ const AddActivity = props => {
   const [submittedPlan, setSubmittedPlan] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const { exercisesList } = useGenerateList("exercises");
-  const { timeList } = useGenerateList("time");
-  const { frequencyList } = useGenerateList("frequency");
+  // const { exercisesList } = useGenerateList("exercises");
+  const exercisesList = [
+    "workout",
+    "weight train",
+    "swim",
+    "walk",
+    "run",
+    "jog",
+    "zumba",
+    "yoga",
+    "pilates",
+    "cycle",
+    "row",
+    "toil at home",
+    "flexibility stretch",
+    "jump rope"
+  ];
+  // const { timeList } = useGenerateList("time");
+  const timeList = [
+    "15 minutes",
+    "30 minutes",
+    "45 minutes",
+    "1 hour",
+    "1 hour and 15 minutes",
+    "1 hour and 30 minutes",
+    "1 hour and 45 minutes"
+  ];
+  // const { frequencyList } = useGenerateList("frequency");
+  const frequencyList = [
+    "once a week",
+    "twice a week",
+    "three times a week",
+    "four times a week",
+    "five times a week"
+  ];
 
   const submitPlan = () => {
     const submittedData = {
@@ -71,9 +103,9 @@ const AddActivity = props => {
     return (
       <>
         {defaultText(textVariable, text)}
-        <select onChange={e => handleOnChange(e, setFunction)}>
+        <select onChange={(e) => handleOnChange(e, setFunction)}>
           <option value="">Select One</option>
-          {mapVariable.map(v => (
+          {mapVariable.map((v) => (
             <option value={v} key={v}>
               {capitializeFirstLetter(v)}
             </option>
