@@ -1,0 +1,126 @@
+// Previous Plan
+[
+  {
+    "id": "1",
+    "plan": [
+      {
+        "futureCheckIn": "2020-01-19T04:40:05.720Z",
+        "activity": {
+          "name": "run",
+          "duration": "1 hour",
+          "frequency": "three times a week"
+        },
+        "week": {
+          "start": "2020-01-06T05:00:00.000Z",
+          "end": "2020-01-13T04:59:59.999Z"
+        }
+      },
+      {
+        "futureCheckIn": "2020-01-07T04:40:05.720Z",
+        "activity": {
+          "name": "rowing",
+          "duration": "1 hour",
+          "frequency": "twice a week"
+        },
+        "week": {
+          "start": "2019-12-30T05:00:00.000Z",
+          "end": "2020-01-05T04:59:59.999Z"
+        }
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "futureCheckIn": "2020-08-16T05:40:21.849Z",
+    "activity": "activity 2",
+    "activityTime": "activityTime 2",
+    "activityFrequency": "activityFrequency 2",
+    "plan": [
+      {
+        "futureCheckIn": "2020-01-20T05:00:00.000Z",
+        "activity": {
+          "name": "gym",
+          "duration": "1 hour",
+          "frequency": "three times a week"
+        },
+        "week": {
+          "start": "2020-01-13T05:00:00.000Z",
+          "end": "2020-01-20T04:59:59.999Z"
+        }
+      }
+    ]
+  }
+][
+  // Current Plan
+
+  ({
+    "userId": "1",
+    "id": "2",
+    "futureCheckIn": "2020-01-19T04:40:05.720Z",
+    "activity": {
+      "name": "run",
+      "duration": "1 hour",
+      "frequency": "three times a week"
+    },
+    "week": {
+      "start": "2020-01-06T05:00:00.000Z",
+      "end": "2020-01-13T04:59:59.999Z"
+    }
+  },
+  {
+    "userId": "1",
+    "id": "1",
+    "futureCheckIn": "2020-01-07T04:40:05.720Z",
+    "activity": {
+      "name": "row",
+      "duration": "1 hour",
+      "frequency": "twice a week"
+    },
+    "week": {
+      "start": "2019-12-30T05:00:00.000Z",
+      "end": "2020-01-05T04:59:59.999Z"
+    }
+  },
+  {
+    "id": "3",
+    "userId": "1",
+    "futureCheckIn": "2020-01-20T05:00:00.000Z",
+    "activity": {
+      "name": "gym",
+      "duration": "45 minutes",
+      "frequency": "four times a week"
+    },
+    "week": {
+      "start": "2020-01-13T05:00:00.000Z",
+      "end": "2020-01-20T04:59:59.999Z"
+    }
+  },
+  {
+    "id": "4",
+    "userId": "1",
+    "futureCheckIn": "2020-01-27T05:00:00.000Z",
+    "activity": {
+      "name": "swim",
+      "duration": "45 minutes",
+      "frequency": "twice a week"
+    },
+    "week": {
+      "start": "2020-01-20T05:00:00.000Z",
+      "end": "2020-01-27T04:59:59.999Z"
+    }
+  },
+  {
+    "id": "5",
+    "userId": "1",
+    "futureCheckIn": "2020-02-03T05:00:00.000Z",
+    "activity": {
+      "name": "swim",
+      "duration": "30 minutes",
+      "frequency": "three times a week"
+    },
+    "week": {
+      "start": "2020-01-27T05:00:00.000Z",
+      "end": "2020-02-03T04:59:59.999Z"
+    }
+  })
+]
